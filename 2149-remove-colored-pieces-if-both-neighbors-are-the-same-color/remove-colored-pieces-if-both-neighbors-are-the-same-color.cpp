@@ -1,23 +1,13 @@
 class Solution {
 public:
     bool winnerOfGame(string a) {
-        int cta=0,ctb=0,i=0,n=a.size();
-        while(i<n){
-            int k=0;
-            while((k+i)<n && a[k+i]=='A') k++;
-            if(k>2) cta+=(k-2);
-            if(k==0) k++;
-            i=i+k;
+        int ca=0,cb=0,n=a.size();
+        for(int i=1;i<n-1;i++){
+            if(a[i]==a[i-1] && a[i]==a[i+1]){
+                if(a[i]=='A') ca++;
+                else cb++;
+            }
         }
-        i=0;
-        while(i<n){
-            int k=0;
-            while((k+i)<n && a[k+i]=='B') k++;
-            if(k>2) ctb+=(k-2);
-            if(k==0) k++;
-            i=i+k;
-        }
-        if(cta>ctb) return 1;
-        else return 0;
+        return ca>cb;
     }
 };
