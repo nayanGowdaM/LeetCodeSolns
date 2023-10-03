@@ -1,14 +1,10 @@
 class Solution {
 public:
-    int numIdenticalPairs(vector<int>& a) {
-        int n=a.size(),ct=0;
-        for(int i=0;i<n-1;i++){
-            //cout<<i<<" ";
-            for(int j=i+1;j<n;j++) 
-            if(a[i]==a[j]){cout<<a[j]<<" "; ct++;}
-            //cout<<endl;
-        }
-        
+    int numIdenticalPairs(vector<int>& nums) {
+        vector<int> v(102,0);
+        for( auto x: nums) v[x]++;
+        int ct=0;
+        for(auto x: v) ct+=x*(x-1)/2;
         return ct;
     }
 };
