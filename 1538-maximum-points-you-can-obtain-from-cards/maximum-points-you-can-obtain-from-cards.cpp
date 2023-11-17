@@ -1,17 +1,15 @@
 class Solution {
 public:
     int maxScore(vector<int>& a, int k) {
-        int n=a.size(),i=0,j=n-k-1,ind=0;
-        int x=accumulate(a.begin(),a.end()-k,0);
-        int sum=x;
-        j++;
-        while(j<n){
-            sum+=a[j]-a[i];
-            if(x>sum){ x=sum; ind=i;}
-            i++;
-            j++;
+        int n=a.size(),ans=0;
+        for(int i=1;i<n;i++) a[i]+=a[i-1];
+        for(int i=0;i<=k;i++){
+            int sum=i>0?a[i-1]:0;
+            int req=k-i;
+            if(req>0)
+            sum+=n-req-1>=0?a[n-1]-a[n-req-1]:a[n-1];
+            ans=max(ans,sum);
         }
-        int ans=accumulate(a.begin(),a.end(),0)-x;
         return ans;
     }
 };
