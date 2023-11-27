@@ -11,18 +11,17 @@
  */
 class Solution {
 public:
-    vector<int>dia(TreeNode* root){
-        if(!root) return {0,0};
-        vector<int> l=dia(root->left);
-        vector<int> r=dia(root->right);
-        int maxC=max(l[1],r[1]);
-        int height=max(l[0],r[0])+1;
-        int curC=l[0]+r[0];
-        maxC=max(maxC,curC);
-        return {height,maxC};
+
+    int dia(TreeNode* root, int& ans){
+        if(!root) return 0;
+        int lh=dia(root->left,ans);
+        int rh=dia(root->right, ans);
+        ans=max(ans, lh+rh);
+        return 1+max(lh,rh);
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        vector<int> ans=dia(root);
-        return ans[1];
+        int ans=0;
+        int height=dia(root, ans);
+        return ans;
     }
 };
