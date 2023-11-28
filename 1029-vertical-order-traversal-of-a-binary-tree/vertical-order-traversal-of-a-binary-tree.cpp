@@ -11,33 +11,28 @@
  */
 class Solution {
 public:
-
-    vector<pair<pair<int,int>,int>>v;
-    static bool cmp(pair<pair<int,int>,int>& a, pair<pair<int,int>,int>& b){
-        if(a.first.first==b.first.first && a.first.second==b.first.second ) return a.second<b.second;
-        if(a.first.second==b.first.second) return a.first.first<b.first.first;
-        return a.first.second<b.first.second;
-    }
-
-    
-    void func(int row, int col, TreeNode* root){
-        if(!root) return ;
-        v.push_back({{row,col},root->val});
-        func(row+1,col-1,root->left);
-        func(row+1,col+1,root->right);
-    }
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        func(0,0,root);
-        sort(v.begin(),v.end(),cmp);
-        for(auto x: v) cout<<x.first.first<<" " <<x.first.second<<' '<<x.second<<endl;
-        int n=v.size(),i=0;
-        vector<vector<int>>ans;
-        while(i<n){
-            int col=v[i].first.second;
-            vector<int>temp;
-            while(i<n && v[i].first.second==col){
-                temp.push_back(v[i].second);
-                i++;
+        map<int,map<int,multiset<int>>>mp;
+        queue<pair<TreeNode*,pair<int,int>>>q;
+        q.push({root,{0,0}});
+        while(!q.empty()){
+            int n=q.size();
+            for(int i=0;i<n;i++){
+                auto it=q.front();
+                q.pop();
+                int x=it.second.first,y=it.second.second;
+                TreeNode* node=it.first;
+                mp[x][y].insert(node->val);
+                if(node->left) q.push({node->left,{x-1,y+1}});
+                if(node->right) q.push({node->right,{x+1,y+1}});
+            }
+        }
+        vector<vector<int>> ans;
+
+        for(auto x: mp){
+            vector<int> temp;
+            for(auto y: x.second){
+                temp.insert(temp.end(),y.second.begin(),y.second.end());
             }
             ans.push_back(temp);
         }
