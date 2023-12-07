@@ -10,27 +10,31 @@
  * };
  */
 class BSTIterator {
-    vector<int> v;
-    int i=0;
-    void inorder(TreeNode* root){
-        if(!root) return ;
-        inorder(root->left);
-        v.push_back(root->val);
-        inorder(root->right);
-    }
+  stack<TreeNode*> st;
 public:
     BSTIterator(TreeNode* root) {
-        inorder(root);
+      bx(root);
+    }
+    
+    void bx(TreeNode* root){
+        cout<<"BSTI  ";
+        while(root){
+          st.push(root);
+          root=root->left;
+        }
     }
     
     int next() {
-        int ans=i<v.size()?v[i++]:-1;
-        return ans;
+      cout<<"Next  ";
+        TreeNode* node=st.top();
+        st.pop();
+        if(node->right) bx(node->right);
+        return node->val;
     }
     
     bool hasNext() {
-        if(i<v.size()) return true;
-        return false;
+      cout<<"Has  ";
+        return !st.empty();
     }
 };
 
