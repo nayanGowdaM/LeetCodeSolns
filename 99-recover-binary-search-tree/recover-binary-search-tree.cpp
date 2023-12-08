@@ -10,27 +10,27 @@
  * };
  */
 class Solution {
+    TreeNode* first, *prev, *mid, *last;
 public:
-    vector<int> v;
+
     void inorder(TreeNode* root){
-        if(!root) return ;
+        if(!root) return;
         inorder(root->left);
-        v.push_back(root->val);
+        if(first->val>root->val){
+            if(!prev){
+                prev=first;
+                mid=root;
+            }
+            else last=root;
+        }
+        first=root;
         inorder(root->right);
     }
-    void CorrInorder(TreeNode* root, int& i){
-        if(!root) return ;
-        CorrInorder(root->left, i);
-        if(root->val!=v[i]) root->val = v[i];
-        i++;
-        CorrInorder(root->right , i);
-    }
     void recoverTree(TreeNode* root) {
-        int i=0;
+        prev=mid=last=NULL;
+        first= new TreeNode(INT_MIN);
         inorder(root);
-        sort(v.begin(),v.end());
-        for(auto x: v) cout<<x<<" ";
-        CorrInorder(root,i);
-        
+        if(prev && last) swap(prev->val, last->val);
+        else swap(prev->val, mid->val);
     }
 };
