@@ -19,7 +19,7 @@ public:
         if(first->val>root->val){
             if(!prev){
                 prev=first;
-                mid=root;
+                last=root;
             }
             else last=root;
         }
@@ -30,7 +30,6 @@ public:
         prev=mid=last=NULL;
         first= new TreeNode(INT_MIN);
         inorder(root);
-        if(prev && last) swap(prev->val, last->val);
-        else swap(prev->val, mid->val);
+        swap(last->val, prev->val);
     }
 };
