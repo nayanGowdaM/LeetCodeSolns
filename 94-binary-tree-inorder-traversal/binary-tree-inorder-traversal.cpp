@@ -12,8 +12,8 @@
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
-        vector<int>ans;
-        if(!root) return ans;
+        vector<int> ans;
+        // if(!root) return ans;
         TreeNode* cur=root;
         while(cur){
             if(!cur->left){
