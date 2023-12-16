@@ -6,12 +6,12 @@ public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
         int n=grid.size();
         if(grid[n-1][n-1]||grid[0][0])return -1;
-        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> q;
+        queue<pair<int,pair<int,int>>> q;
         q.push({0,{0,0}});
         vector<vector<int>>dist(n,vector<int>(n,INT_MAX));
         dist[0][0]=0;
         while(!q.empty()){
-            int d=q.top().first,x=q.top().second.first,y=q.top().second.second;
+            int d=q.front().first,x=q.front().second.first,y=q.front().second.second;
             q.pop();
             if(check(x-1,n,y,n) && !grid[x-1][y] && 1+d<dist[x-1][y]){
                 dist[x-1][y]=d+1;
