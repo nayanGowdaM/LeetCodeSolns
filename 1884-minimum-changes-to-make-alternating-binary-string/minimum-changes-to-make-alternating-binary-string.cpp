@@ -11,14 +11,7 @@ public:
                 if(s[i]!=z) ct1++;
             }
         }
-        for(int i=0;i<s.size();i++){
-            if(i%2==0){
-                if(s[i]!=o) ct2++;
-            }
-            else{
-                if(s[i]!=z) ct2++;
-            }
-        }
+        ct2=s.size()-ct1;
         return min(ct1,ct2);
     }
 };
