@@ -1,21 +1,19 @@
 class Solution {
-    int dp[102][102];
-    int path(vector<vector<int>>& a,int i,int j){
-        if(i==0 && j==0 ) return 0;
-        if(i==0 && j==1 || i==1 && j==0) return 1;
-        if(dp[i][j]!=-1) return dp[i][j];
-        int ct1=0,ct2=0;
-        if(i>0 && !a[i-1][j]) ct1=path(a,i-1,j);
-        if(j>0 && !a[i][j-1]) ct2=path(a,i,j-1);
-        return dp[i][j]=ct1+ct2;
-    }
 public:
     int uniquePathsWithObstacles(vector<vector<int>>& a) {
-        int i=a.size()-1,j=a[0].size()-1;
-        if(i==0 && j==0) return !a[i][j];
-        if(a[i][j]  || a[0][0]) return 0;
-        // if(i==0 || j==0) return 1;
-        memset(dp,-1,sizeof(dp));
-        return path(a,i,j);
+        int m=a.size(),n=a[0].size();
+        if(a[m-1][n-1] || a[0][0]) return 0;
+        int dp[m][n];
+        memset(dp,0,sizeof(dp));
+        for(int i=0;i<m;i++){
+            for( int j=0;j<n;j++){
+                if(!i && !j && !a[i][j]) dp[i][j]=1;
+                else if(!a[i][j]){
+                    if(i) dp[i][j]+=dp[i-1][j];
+                    if(j) dp[i][j]+=dp[i][j-1];
+                }
+            }
+        }
+        return dp[m-1][n-1];
     }
 };
