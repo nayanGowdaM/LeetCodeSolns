@@ -9,8 +9,21 @@ class Solution {
         return dp[m][n]=a[m][n]+ min(ct1,ct2);
     }
 public:
-    int minPathSum(vector<vector<int>>& grid) {
-        memset(dp,-1,sizeof(dp));
-        return solve(grid,grid.size()-1,grid[0].size()-1);
+    int minPathSum(vector<vector<int>>& a) {
+        int m=a.size(),n=a[0].size();
+        int dp[m+1][n+1];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0) dp[i][j]=a[i][j];
+                else {
+                    if(j && i) dp[i][j]=a[i][j] + min(dp[i-1][j],dp[i][j-1]);
+                    else if(j) dp[i][j]=a[i][j]+dp[i][j-1];
+                    else dp[i][j]=a[i][j]+dp[i-1][j];
+                }
+            }
+        }
+        return dp[m-1][n-1];
+
+
     }
 };
