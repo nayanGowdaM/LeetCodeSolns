@@ -15,8 +15,28 @@ class Solution {
         return dp[m][n] =  ( solve(m-1,n,a,b)  ||  solve(m, n-1,a,b));
     }
 public:
-    bool isMatch(string s, string p) {
-        memset(dp,-1,sizeof(dp));
-        return solve(s.size(),p.size(),s,p);
+    bool isMatch(string a, string b) {
+        // memset(dp,-1,sizeof(dp));
+        // return solve(s.size(),p.size(),s,p);
+
+        int m=a.size(), n=b.size();
+        vector<vector<int>> dp(m+1,vector<int>(n+1));
+        dp[0][0]=1;
+        for(int i=1;i<=n;i++) {
+            if(b[i-1]=='*') dp[0][i]=dp[0][i-1];
+            else dp[0][i]=0;
+        }
+        for(int i=1;i<=m ;i++) dp[i][0] = 0 ;
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                if(a[i-1]==b[j-1] ) dp[i][j] = dp[i-1][j-1];
+                else if(b[j-1]>='a' && b[j-1]<='z') dp[i][j]=0;
+                else if(b[j-1]=='?') dp[i][j] = dp[i-1][j-1];
+                else dp[i][j] = dp[i-1][j] || dp[i][j-1];
+            }
+        }
+        return dp[m][n];
+
+
     }
 };
