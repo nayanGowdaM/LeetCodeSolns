@@ -1,42 +1,61 @@
-int dp[2002][2002];
+// class Solution {
+// public:
+//     bool isMatch(string s, string p) {
+//         int sIdx = 0, pIdx = 0, lastWildcardIdx = -1, sBacktrackIdx = -1, nextToWildcardIdx = -1;
+//         while (sIdx < s.size()) {
+//             if (pIdx < p.size() && (p[pIdx] == '?' || p[pIdx] == s[sIdx])) { 
+//                 // chars match
+//                 ++sIdx;
+//                 ++pIdx;
+//             } else if (pIdx < p.size() && p[pIdx] == '*') { 
+//                 // wildcard, so chars match - store index.
+//                 lastWildcardIdx = pIdx;
+//                 nextToWildcardIdx = ++pIdx;
+//                 sBacktrackIdx = sIdx;
+                 
+//                 //storing the pidx+1 as from there I want to match the remaining pattern 
+//             } else if (lastWildcardIdx == -1) { 
+//                 // no match, and no wildcard has been found.
+//                 return false;
+//             } else { 
+//                 // backtrack - no match, but a previous wildcard was found.
+//                 pIdx = nextToWildcardIdx;
+//                 sIdx = ++sBacktrackIdx;
+//                 //backtrack string from previousbacktrackidx + 1 index to see if then new pidx and sidx have same chars, if that is the case that means wildcard can absorb the chars in b/w and still further we can run the algo, if at later stage it fails we can backtrack
+//             }
+//         }
+//         for(int i = pIdx; i < p.size(); i++){
+//             if(p[i] != '*') return false;
+//         }
+//         return true;
+//     }
+// };
+
+
+
 
 class Solution {
-    bool solve(int m, int n, string& a, string& b){
-        if(n==0 && m==0) return true;
-        if(n==0) return false;
-        if(m==0){
-            if(b[n-1]=='*' ) return solve(m,n-1,a,b);
-            else return false;
-        }
-        if(dp[m][n]!=-1) return dp[m][n] ;
-        if(a[m-1]==b[n-1] ) return  dp[m][n] = solve(m-1,n-1,a,b);
-        else if(b[n-1] >='a'  && b[n-1] <= 'z') return dp[m][n] =  false;
-        else if(b[n-1]=='?') return  dp[m][n] = solve(m-1,n-1,a,b);
-        return dp[m][n] =  ( solve(m-1,n,a,b)  ||  solve(m, n-1,a,b));
-    }
 public:
-    bool isMatch(string a, string b) {
-        // memset(dp,-1,sizeof(dp));
-        // return solve(s.size(),p.size(),s,p);
-
-        int m=a.size(), n=b.size();
-        vector<vector<int>> dp(m+1,vector<int>(n+1));
-        dp[0][0]=1;
-        for(int i=1;i<=n;i++) {
-            if(b[i-1]=='*') dp[0][i]=dp[0][i-1];
-            else dp[0][i]=0;
-        }
-        for(int i=1;i<=m ;i++) dp[i][0] = 0 ;
-        for(int i=1;i<=m;i++){
-            for(int j=1;j<=n;j++){
-                if(a[i-1]==b[j-1] ) dp[i][j] = dp[i-1][j-1];
-                else if(b[j-1]>='a' && b[j-1]<='z') dp[i][j]=0;
-                else if(b[j-1]=='?') dp[i][j] = dp[i-1][j-1];
-                else dp[i][j] = dp[i-1][j] || dp[i][j-1];
+    bool isMatch(string s, string p) {
+        int sIdx=0,pIdx=0,sBackTrack=-1,lastWildCard=-1,nextTOwildCard=-1;
+        int m=s.size(), n=p.size();
+        while(sIdx<m){
+            if(pIdx<n && ( p[pIdx]=='?'  || s[sIdx]==p[pIdx]  )){
+                sIdx++;
+                pIdx++;
+            }
+            else if(pIdx<n && p[pIdx]=='*') {
+                lastWildCard=pIdx;
+                nextTOwildCard= ++pIdx;
+                sBackTrack=sIdx;
+            }
+            else if(lastWildCard==-1) return false;
+            else {
+                pIdx=nextTOwildCard;
+                sIdx= ++sBackTrack;
             }
         }
-        return dp[m][n];
-
-
+        for(int i=pIdx;i<n;i++) if(p[i]!='*'  ) return false;
+        return true;
     }
 };
