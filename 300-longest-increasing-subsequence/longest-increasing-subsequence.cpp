@@ -10,10 +10,24 @@ class Solution {
     }
 public:
     int lengthOfLIS(vector<int>& nums) {
-        memset(dp, -1, sizeof(dp));
-        return solve(nums.size()-1,nums.size(),nums);
+        // memset(dp, -1, sizeof(dp));
+        // return solve(nums.size()-1,nums.size(),nums);
 
 
+        int n=nums.size();
+        vector<vector<int>> dp(n+1, vector<int> ( n+2, 0));
+        for( int i=1 ; i<=n;i++){
+            for( int j=i+1; j<=n+1;j++){
+                int len= dp[i-1][j];
+                if( j==n+1 || nums[j-1]> nums[i-1]) len=max(len, 1+ dp[i-1][i]);
+                dp[i][j]=len;
+                // cout<<len<<" ";
+            }
+            // cout<<endl;
+            
+        }
+
+        return dp[n][n+1];
 
     }
 };
