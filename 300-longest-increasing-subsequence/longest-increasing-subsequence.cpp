@@ -15,19 +15,21 @@ public:
 
 
         int n=nums.size();
-        vector<vector<int>> dp(n+1, vector<int> ( n+2, 0));
+        // vector<vector<int>> dp(n+1, vector<int> ( n+2, 0));
+        vector<int> cur(n+2,0),prev(n+2,0);
         for( int i=1 ; i<=n;i++){
             for( int j=i+1; j<=n+1;j++){
-                int len= dp[i-1][j];
-                if( j==n+1 || nums[j-1]> nums[i-1]) len=max(len, 1+ dp[i-1][i]);
-                dp[i][j]=len;
+                int len= prev[j];
+                if( j==n+1 || nums[j-1]> nums[i-1]) len=max(len, 1+ prev[i]);
+                cur[j]=len;
                 // cout<<len<<" ";
             }
+            prev=cur;
             // cout<<endl;
             
         }
 
-        return dp[n][n+1];
+        return cur[n+1];
 
     }
 };
