@@ -1,43 +1,31 @@
 class Solution {
-    bool check(int i, int r, int j, int c){
-        return i>=0 && i<r && j>=0 && j<c;
-    }
+typedef  pair<pair<int,int>, int> ppi;
+bool is_valid( int row, int col , int m,int n){
+    return row>=0 && row<m && col>=0 && col<n;
+}
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        queue<pair<pair<int,int>,int>>q;
         int m=mat.size(), n=mat[0].size();
-        vector<vector<int>> vis(m,vector<int>(n,0));
-        for(int i=0;i<m;i++) 
-            for(int j=0;j<n;j++){
-                if(mat[i][j]==0){
-                    vis[i][j] =1;
+        int loc[][2]={{-1,0},{0,1},{1,0}, {0,-1}};
+        vector<vector<int>>  ans(m, vector<int>(n,-1));
+        queue<ppi> q;
+        for( int i=0;i<m;i++) {
+            for( int j=0;j<n;j++) {
+                if(mat[i][j]==0) {
                     q.push({{i,j},0});
-                    
+                    ans[i][j]=0;
                 }
             }
-        vector<vector<int>> ans(m, vector<int> (n,0));
+        }
         while(!q.empty()){
-            int i=q.front().first.first, j=q.front().first.second, f=q.front().second;
+            auto x=q.front().first.first, y=q.front().first.second, dist=q.front().second;
             q.pop();
-            if(check(i-1,m, j, n) && !vis[i-1][j]){
-                ans[i-1][j]=f+1;
-                q.push({{i-1,j},f+1});
-                vis[i-1][j]=1;
-            }
-            if(check(i+1,m, j, n) && !vis[i+1][j]){
-                ans[i+1][j]=f+1;
-                q.push({{i+1,j},f+1});
-                vis[i+1][j]=1;
-            }
-            if(check(i,m, j-1, n) && !vis[i][j-1]){
-                ans[i][j-1]=f+1;
-                q.push({{i,j-1},f+1});
-                vis[i][j-1]=1;
-            }
-            if(check(i,m, j+1, n) && !vis[i][j+1]){
-                ans[i][j+1]=f+1;
-                q.push({{i,j+1},f+1});
-                vis[i][j+1]=1;
+            for( auto& move: loc){
+                int row=x+move[0], col=y+move[1];
+                if(is_valid(row, col,m, n) && ans[row][col] == -1){
+                    ans[row][col] = dist+1;
+                    q.push({{row,col}, dist+1});
+                }
             }
         }
         return ans;
