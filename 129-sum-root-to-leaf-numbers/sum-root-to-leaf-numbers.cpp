@@ -11,16 +11,14 @@
  */
 class Solution {
     int ans=0;
-    void solve(TreeNode* root,int& res){
+    void solve(TreeNode* root,int res){
         if(!root) return ;
         if(!root->left && !root->right){
             ans+=res*10+root->val;
             return ;
         }
-        res=res*10+root->val;
-        if(root->left) solve(root->left, res);
-        if(root->right) solve(root->right, res);
-        res=(res-root->val)/10;
+        solve(root->left, res*10+root->val);
+        solve(root->right, res*10+root->val);
     }
 public:
     int sumNumbers(TreeNode* root) {
