@@ -20,23 +20,10 @@ class Solution {
 public:
     Node* connect(Node* root) {
         if(!root) return root;
-        queue<Node*> cur, next;
-        cur.push(root);
-        while(!cur.empty()){
-            Node* node=cur.front();
-            cur.pop();
-            if(node->left){
-                next.push(node->left);
-                next.push(node->right);
-            }
-            if(cur.empty()){
-                node->next=NULL;
-                swap(cur, next);
-            }
-            else{
-                node->next=cur.front();
-            }
-        }
+        if(root->left) root->left->next=root->right;
+        if(root->right && root->next) root->right->next = root->next->left;
+        connect(root->left);
+        connect(root->right);
         return root;
     }
 };
