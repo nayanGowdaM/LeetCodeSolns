@@ -1,35 +1,25 @@
 class Solution {
 public:
-    bool check(int i, int r,int j,int c){
-        return i>=0 && i<r && j>=0 && j<c;
-    }
-    vector<vector<int>> floodFill(vector<vector<int>>& a, int sr, int sc, int color) {
-        if(a[sr][sc]==color) return a;
-        queue<pair<int,int>>q;
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int m=image.size(), n=image[0].size(), prevC = image[sr][sc];
+        if ( prevC == color) return image;
+        queue<pair<int,int>> q;
         q.push({sr,sc});
-        int x=a[sr][sc];
-        a[sr][sc]=color;
-        int m=a.size(), n=a[0].size();
+        vector<vector<int>> dir = {{ 0,1},{0,-1}, {1,0},{-1,0}};
+        image[sr][sc] = color;
         while(!q.empty()){
-            int i=q.front().first,j=q.front().second;
+            auto node = q.front();
             q.pop();
-            if(check(i-1,m,j,n) && a[i-1][j]==x){
-                q.push({i-1,j});
-                a[i-1][j]=color;
+            for( int i=0;i<4;i++){
+                int x = node.first + dir[i][0] , y = node.second + dir[i][1];
+                if( x>=0 && y>=0 && x<m && y<n && image[x][y]==prevC){
+                    q.push({x,y});
+                    image[x][y] = color;
+                }
+            
             }
-            if(check(i+1,m,j,n) && a[i+1][j]==x){
-                q.push({i+1,j});
-                a[i+1][j]=color;
-            }
-            if(check(i,m,j-1,n) && a[i][j-1]==x){
-                q.push({i,j-1});
-                a[i][j-1]=color;
-            }
-            if(check(i,m,j+1,n) && a[i][j+1]==x){
-                q.push({i,j+1});
-                a[i][j+1]=color;
-            }
+            
         }
-        return a;
+        return image;
     }
 };
