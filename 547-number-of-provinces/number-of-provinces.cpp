@@ -1,33 +1,23 @@
 class Solution {
-
-    void bfs(vector<vector<int>>& a,vector<int>& vis,int src){
-        queue<int> q;
-        q.push(src);
+    void dfs( int src, vector<int>& vis, vector<vector<int>>& g, int n){
         vis[src]=1;
-        while(!q.empty()){
-            int x=q.front();
-            q.pop();
-            for(int i=0;i<vis.size();i++){
-                if(a[x][i] && !vis[i]){
-                    vis[i]=1;
-                    q.push(i);
-                }
-            }
+        for( int i =0;i<n;i++){
+            if( !vis[i] && g[src][i]) dfs( i, vis, g, n);
         }
     }
-
 public:
+    int findCircleNum(vector<vector<int>>& g) {
+        int ans=0;
+        int n= g.size();
+        vector<int> vis(n,0 );
 
-    int findCircleNum(vector<vector<int>>& a) {
-        vector<int  >vis(a.size(),0);
-        int ct=0;
-        for(int i=0;i<a.size();i++){
-            if(!vis[i]){
-                ct++;
-                bfs(a,vis,i);
+        for( int i=0;i<n;i++){
+            if( !vis[i]){
+                dfs( i, vis, g, n);
+                ans++;
             }
-            
         }
-        return ct;
+        return ans;
+        
     }
 };
