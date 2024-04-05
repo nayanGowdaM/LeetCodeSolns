@@ -1,46 +1,36 @@
 class Solution {
 public:
-    bool check(int i, int r, int j, int c){
-        return i>=0 && i<r && j>=0 && j<c;
-    }
     int orangesRotting(vector<vector<int>>& grid) {
-        int good=0,m=grid.size(),n=grid[0].size();
-        queue<pair<pair<int,int>, int>>q;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(grid[i][j]==1 ) good++;
-                else if(grid[i][j]==2){ q.push({{i,j},0}); }
-            }
+        int m=grid.size(), n=grid[0].size();
+        // vector<vector<int>>vis(m, vector<int>(n,0));
+        queue<pair<int,int>>nq,q;
+        int ans = 0;
+        for( int i=0;i<m;i++){
+            for( int j=0;j<n;j++) if( grid[i][j]==2) nq.push( {i,j});
         }
-        int i,j,t=0;
-        while(!q.empty()){
-            i=q.front().first.first;
-            j=q.front().first.second;
-            t=q.front().second;
-            q.pop();
-            if(check(i-1,m,j,n) && grid[i-1][j]==1){
-                grid[i-1][j]=2;
-                q.push({{i-1,j},t+1});
-                good--;
-            }
-            if(check(i+1,m,j,n) && grid[i+1][j]==1){
-                grid[i+1][j]=2;
-                q.push({{i+1,j},t+1});
-                good--;
-            }
-            if(check(i,m,j-1,n) && grid[i][j-1]==1){
-                grid[i][j-1]=2;
-                q.push({{i,j-1},t+1});
-                good--;
 
+        vector<vector<int>> dir={{-1,0},{1,0},{0,1},{0,-1}};
+        while(!nq.empty()){
+            // queue<pair<int,int>> q;
+            while(!nq.empty()){
+                auto node = nq.front();
+                nq.pop();
+                for( int i=0;i<4;i++){
+                    int x = node.first + dir[i][0] , y = node.second + dir[i][1];
+                    if(x>=0 && y>=0 && x<m && y<n && grid[x][y]==1){
+                        grid[x][y]=2;
+                        q.push({x,y});
+                    }
+                }
             }
-            if(check(i,m,j+1,n) && grid[i][j+1] == 1){
-                grid[i][j+1]=2;
-                q.push({{i,j+1},t+1});
-                good--;
+            if(!q.empty()){
+                ans++;
             }
+            swap( q, nq);
         }
-        if(good) return -1;
-        return t;
+        for( int i=0;i<m;i++){
+            for( int j=0;j<n;j++) if( grid[i][j]==1) return -1;
+        }
+        return ans;
     }
 };
