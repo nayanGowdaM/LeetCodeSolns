@@ -10,49 +10,16 @@
  * };
  */
 class Solution {
-
-    string lex(string& a , string& b){
-        int n = min( a.size(), b.size());
-        int i=0;
-        while( i<n){
-            if(a[i] == b[i]) i++;
-            else {
-                if( a[i] > b[i]) return b;
-                else return a;
-            }
-        }
-        if( a.size() < b.size()) return a;
-        else return b;
-
-    }
-
-    string solve( TreeNode* root, string prev ){
-        char ch = 'a' + root->val;
-        if(!root->left  && !root->right) return string(1,ch) + prev;
-        string left="", right="";
-         
-        if(root->left && root->right){
-            left = solve( root->left, string(1,ch)) +prev;
-            right = solve(root->right ,  string(1,ch)) + prev;
-            string ans = lex( left, right);
-            cout<<ans;
-           
-            return ans;
-        }
-        else if(root->left){
-            left = solve( root->left,  string(1,ch));
-            // char ch = root->val + 'a';
-            return left + prev;
-        }
-        else{
-            right = solve(root->right,  string(1,ch));
-            return right +prev;
-        }
-
+    string ans="~";
+    void solve( TreeNode* root , string s){
+        if(!root) return ;
+        if(!root->left && !root->right) ans = min( ans, string( 1, root->val + 'a') + s);
+        solve( root->left, string( 1, root->val + 'a') + s);
+        solve( root->right , string(1, root->val+'a')+s);
     }
 public:
     string smallestFromLeaf(TreeNode* root) {
-        if(!root) return "";
-        return solve( root, "");
+        solve(root, "" );
+        return ans;
     }
 };
