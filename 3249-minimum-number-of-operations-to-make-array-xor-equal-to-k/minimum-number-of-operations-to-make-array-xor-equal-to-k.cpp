@@ -6,11 +6,6 @@ public:
             ans^=x;
         }
         ans ^= k;
-        int res=0;
-        while(ans) {
-            res+=ans%2;
-            ans/=2;
-        }
-        return res;
+        return __builtin_popcount(ans);
     }
 };
