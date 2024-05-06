@@ -1,23 +1,23 @@
 class Solution {
-public:
-    vector<vector<int >> v;
-    void solve(vector<int >& a,vector<int>& ans , int i,int t ){
-        if(!t ) {
-            v.push_back(ans);
+    vector<vector<int>> ans;
+    void solve(int tar, int n , vector<int>& cand, vector<int>& res ){
+        if( tar == 0){
+            ans.push_back( res);
             return;
         }
-        while(i<a.size() && t-a[i]>=0){
-            ans.push_back(a[i]);
-            solve(a,ans,i,t-a[i]);
-            i++;
-            ans.pop_back();
+        if( n<=0 || tar<0) return;
+        solve(tar, n-1, cand, res);
+        if( cand[n-1] <= tar){
+            res.push_back( cand[n-1]);
+            solve( tar - cand[n-1] , n, cand, res);
+            res.pop_back();
         }
+        
     }
-    vector<vector<int>> combinationSum(vector<int>& a, int t) {
-        vector<int> ans;
-        sort(a.begin(),a.end());
-        a.erase(unique(a.begin(),a.end()),a.end());
-        solve(a,ans,0,t);
-        return v;
+public:
+    vector<vector<int>> combinationSum(vector<int>& cand, int tar) {
+        vector<int> res;
+        solve( tar, cand.size(), cand, res);
+        return ans;
     }
 };
