@@ -30,13 +30,13 @@ class Solution {
         string s(n, '.');
 
         for( int i=0;i<n;i++){
-            s[i]='Q';
-            res[row]=s;
+            // s[i]='Q';
+            res[row][i]='Q';
             if( check( res, row, i)){
                 solve( row+1, res);
             }
-            s[i]='.';
-            res[row]=s;
+            // s[i]='.';
+            res[row][i]='.';
         }
 
     }
@@ -45,7 +45,7 @@ public:
     vector<vector<string>> solveNQueens(int n) {
         if( n==1) return {{"Q"}};
         else if( n==2 || n==3) return ans;
-        vector<string> res(n);
+        vector<string> res(n,string ( n, '.'));
         solve( 0, res );
         return ans;
     }
