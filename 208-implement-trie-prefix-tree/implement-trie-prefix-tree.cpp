@@ -1,62 +1,64 @@
+struct Node{
+    Node *links[26];
+    bool flag = false;
 
-struct Node {
-    Node* links[26];
-    bool flag =  false ;
+    bool containsKey( char ch){
+        return links[ch-'a'] != NULL;
+    }
 
-    bool hasKey( char key){
-        return links[key-'a'] != NULL;
+    void put(char ch,  Node* node){
+        links[ch-'a'] = node;
     }
-    void put( char key, Node* node){
-        links[key-'a'] = node;
+
+    Node* get( char ch){
+        return links[ch-'a'];
     }
-    void SetEnd(){
+
+    void setEnd(){
         flag = true;
     }
-    Node* getKey( char key){
-        return links[key-'a'];
-    }
 
-    bool isEnd( ){
+    bool isEnd(){
         return flag;
     }
-
 };
 
-
-
 class Trie {
-     Node* root;
+    Node *root;
 public:
     Trie() {
-       root = new Node();
+        root=new Node();
     }
     
     void insert(string word) {
-        Node* node = root ;
-        for( int i=0;i<word.size();i++){
-             if(! node->hasKey(word[i])){
-                 node->put( word[i], new Node());
-             }
-            node = node->links[word[i]-'a'];
+        Node* node = root;
+        for(auto x: word){
+            // cout<<x<<" "
+            if( !node->containsKey(x)){
+                node->put( x, new Node());
+            }
+            node = node->get( x);
         }
-        node->SetEnd();
+
+        node->setEnd();
     }
     
     bool search(string word) {
-        Node* node = root;
-        for( int i=0;i<word.size();i++){
-            if( !node->hasKey( word[i])) return false;
-            node = node->getKey(word[i]);
+        Node *node = root;
+        for( auto x: word){
+            if(!node->containsKey( x)) return false;
+            node = node->get( x);
+
         }
         return node->isEnd();
-
     }
     
     bool startsWith(string word) {
-        Node* node = root;
-        for( int i=0;i<word.size();i++){
-            if( ! node->hasKey(word[i])) return false;
-            node =  node->getKey(word[i]);
+        Node *node = root;
+        for( auto x: word){
+            if(!node->containsKey( x)) return false;
+            node = node->get( x);
+
         }
         return true;
     }
