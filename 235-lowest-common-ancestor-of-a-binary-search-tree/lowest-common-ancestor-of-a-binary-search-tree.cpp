@@ -10,13 +10,12 @@
 
 class Solution {
 public:
-    TreeNode* find(TreeNode* root, TreeNode* p, TreeNode* q){
-        if(p->val <= root->val && root->val <= q->val) return root;
-        if(q->val < root->val) return find(root->left, p, q);
-        else return find(root->right, p, q);
-    }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(p->val>q->val) swap(p,q);
-        return find(root, p, q);
+        if( p->val > q->val) swap(p,q);
+        if(!root) return NULL;
+        else if( p->val == root->val || q->val == root->val) return root;
+        else if( ( root->val<p->val && root->val <q->val)) return  lowestCommonAncestor( root->right, p,q);
+        else if( ( root->val > p->val && root->val >q->val)) return lowestCommonAncestor(root->left, p, q);
+        else return root;
     }
 };
