@@ -10,13 +10,14 @@
  * };
  */
 class Solution {
-public:
-    bool isValid(TreeNode* root, pair<long long ,long long > p){
-        if(!root ) return true;
-        return root->val<p.second && root->val>p.first && isValid(root->left, {p.first,root->val}) && isValid(root->right, {root->val, p.second});
+    bool validate( TreeNode* root, long long  l, long long  r){
+        if(!root) return true;
+        if( root->val >l && root->val <r) return validate(root->left,l, root->val) && validate( root->right, root->val, r);
+        else return false;
     }
+public:
     bool isValidBST(TreeNode* root) {
-        if(!root || !root->left && !root->right) return  true;
-        return isValid(root, {LLONG_MIN,LLONG_MAX});
+        long long l= -1ll + INT_MIN, r=1ll + INT_MAX;
+        return validate(root,l,r);
     }
 };
