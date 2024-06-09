@@ -19,19 +19,20 @@ public:
         sort( reward.begin(), reward.end());
         // return solve( 0,0, reward);
 
-        vector<vector<int>> dp( n+1, vector<int>(4002));
-        for( int i=0;i<4002;i++) dp[n][i] = 0;
+        // vector<vector<int>> dp( n+1, vector<int>(4002));
+        vector<int> cur( 4002) , next(4002);
 
         for(int i=n-1;i>=0;i--){
             for( int j=4000;j>=0;j--){
                 int take = 0;
                 if( reward[i] > j){
-                    take = reward[i] + dp[i+1][j+reward[i]];
+                    take = reward[i] + next[j+reward[i]];
                 }
-                int notTake = dp[i+1][j];
-                dp[i][j] = max( take , notTake );
+                int notTake = next[j];
+                cur[j] = max( take , notTake );
             }
+            next = cur;
         }
-        return dp[0][0] ;
+        return cur[0] ;
     }
 };
