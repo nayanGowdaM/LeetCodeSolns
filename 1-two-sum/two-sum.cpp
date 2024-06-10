@@ -1,15 +1,11 @@
 class Solution {
 public:
-    vector<int> twoSum(vector<int>& a, int t) {
-        map<int,int>mp;
-        int n=a.size();
-        for(int i=0;i<n;i++){
-            int rem=t-a[i];
-            if(mp.find(rem)!=mp.end()){
-                return { i, mp[rem]};
+    vector<int> twoSum(vector<int>& nums, int target) {
+        for( int i=0;i<nums.size();i++){
+            for( int j=i+1;j<nums.size();j++){
+                if(nums[i]+nums[j] == target) return {i,j};
             }
-            mp[a[i]] = i;
         }
-        return {-1,-1};
+        return {};
     }
 };
