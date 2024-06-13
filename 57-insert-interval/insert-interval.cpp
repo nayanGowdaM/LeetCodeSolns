@@ -1,25 +1,26 @@
 class Solution {
-
-    vector<vector<int>> merge(vector<vector<int>>& slot) {
-        sort(slot.begin(), slot.end());
-        vector<vector<int>> ans;
-        int s = slot[0][0], e = slot[0][1];
-        for( int i=1;i<slot.size();i++){
-            if( e < slot[i][0]){
-                ans.push_back({s,e});
-                s=slot[i][0];
-                e=slot[i][1];
-            }
-            else{
-                e=max( e, slot[i][1]);
-            }
-        }
-        ans.push_back( {s,e});
-        return ans;
-    }
 public:
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
-        intervals.push_back(newInterval);
-        return merge( intervals);
+        vector<vector<int>> ans;
+        int i=0, n=intervals.size();
+        while( i<n && intervals[i][0]<newInterval[0] && intervals[i][1] < newInterval[0]){
+            ans.push_back( intervals[i]);
+            i++;
+        }
+        if( i==n) ans.push_back( newInterval);
+        else{
+            int start = newInterval[0] , end=newInterval[1];
+            while( i<n && !(end<intervals[i][0])){
+                start= min(start, intervals[i][0]);
+                end=max( end, intervals[i][1]);
+                i++;
+            }
+            ans.push_back({start, end});
+        }
+        while( i<n){
+            ans.push_back( intervals[i]);
+            i++;
+        }
+        return ans;
     }
 };
