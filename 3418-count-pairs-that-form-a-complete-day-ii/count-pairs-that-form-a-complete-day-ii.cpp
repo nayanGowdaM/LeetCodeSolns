@@ -6,7 +6,7 @@ public:
         for( int i=0;i<hours.size(); i++){
             ans+= hrs[hours[i]%24];
             int idx= 24 - ( hours[i] % 24);
-            cout<<idx<<" ";
+            // cout<<idx<<" ";
             hrs[(24 - ( hours[i] %24))%24]++;
         }
         return ans;
