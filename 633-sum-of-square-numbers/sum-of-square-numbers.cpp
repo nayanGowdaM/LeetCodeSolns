@@ -1,15 +1,9 @@
 class Solution {
 public:
     bool judgeSquareSum(int c) {
-        long long  i=0;
-        unordered_set<long long int > st;
-        for(;i*i<=c/2;i++){
-            st.insert( i*1LL*i);
-        }
-        i--;
-        for(;i*i<=c;i++ ){
-            if( st.find( c-i*i) != st.end()) return true;
-
+        for(long long int  i=0;i*i<=c;i++){
+            double rem = sqrt( c-i*i);
+            if( rem == floor( rem)) return true;
         }
         return false;
     }
