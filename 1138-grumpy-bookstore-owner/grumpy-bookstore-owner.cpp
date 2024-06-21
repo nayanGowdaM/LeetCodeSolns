@@ -1,25 +1,24 @@
 class Solution {
 public:
-    int maxSatisfied(vector<int>& cust, vector<int>& grumpy, int min) {
-        int ans=0, res=0;
-        int n=cust.size();
-        for( int i=0;i<n;i++){
-            if(!grumpy[i]) ans+=cust[i];
-        }
-        int start =0, end = min-1, temp=0;
-        for( int  i=start;i<=end;i++){
-            if(grumpy[i]) temp+=cust[i];
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int ans=0;
+        int n = grumpy.size();
+        for( int i=0;i<n;i++) if( !grumpy[i]){
+            ans+=customers[i];
+            customers[i]=0;
         }
 
-        ans = ans + temp;
-        while( end< n){
-            res = max( res, ans);
-            if( grumpy[start]) ans -= cust[start];
-            start++;
-            end++;
-            if(end<n  && grumpy[end]) ans += cust[end];
+        int l=0, r=0;
+        int res=0, window=0;
+        while( r<n){
+            window+= customers[r];
+            if( r-l+1 == minutes){
+                res=max( res, window);
+                window-=customers[l];
+                l++;
+            }
+            r++;
         }
-        return res;
-        
+        return res+ans;
     }
 };
